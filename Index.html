@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>ورود باللمس</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #111;
+      touch-action: none;
+    }
+    canvas {
+      display: block;
+      background: #111;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<script>
+const canvas = document.getElementById('canvas')
+const ctx = canvas.getContext('2d')
+
+function resize() {
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+}
+resize()
+window.addEventListener('resize', resize)
+
+function drawFlower(x, y) {
+  const petals = 10
+  const petalRadius = 18
+  const centerRadius = 7
+
+  ctx.save()
+  ctx.translate(x, y)
+
+  for (let i = 0; i < petals; i++) {
+    ctx.rotate((Math.PI * 2) / petals)
+    ctx.beginPath()
+    ctx.fillStyle = `hsl(${Math.random() * 360}, 80%, 65%)`
+    ctx.arc(15, 0, petalRadius, 0, Math.PI * 2)
+    ctx.fill()
+  }
+
+  ctx.beginPath()
+  ctx.fillStyle = '#FFD700'
+  ctx.arc(0, 0, centerRadius, 0, Math.PI * 2)
+  ctx.fill()
+
+  ctx.restore()
+}
+
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault()
+  const t = e.touches[0]
+  drawFlower(t.clientX, t.clientY)
+})
+
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault()
+  const t = e.touches[0]
+  drawFlower(t.clientX, t.clientY)
+})
+</script>
+
+</body>
+</html>
